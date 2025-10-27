@@ -1,10 +1,16 @@
 # services/mistral_service.py
 from transformers import pipeline
 
-class MistralModel():
+class MistralModel:
     def __init__(self, model_name="mistralai/Mistral-7B-Instruct-v0.2"):
-        self.pipe = pipeline("text-generation", model=model_name)
+        self.pipe = pipeline(
+            "text-generation",
+            model=model_name,
+            device_map="auto",
+            torch_dtype="auto",
+            trust_remote_code=True
+        )
 
     def generate(self, prompt: str) -> str:
         result = self.pipe(prompt, max_new_tokens=150)
-        return result[0]['generated_text']
+        return result[0]["generated_text"]
