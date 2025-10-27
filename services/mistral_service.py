@@ -1,7 +1,7 @@
 # services/mistral_service.py
 from transformers import pipeline
 
-class MistralModel(BaseModel):
+class MistralModel():
     def __init__(self, model_name="mistralai/Mistral-7B-Instruct-v0.2"):
         self.pipe = pipeline("text-generation", model=model_name)
 

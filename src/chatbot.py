@@ -1,15 +1,14 @@
+from src.model_factory import ModelFactory
+
 class Chatbot:
-    def __init__(self, model):
-        self.model = model
-        self.strategy = None
-
-    def set_strategy(self, strategy):
+    def __init__(self, model_name: str, strategy):
+        self.model = ModelFactory.create_model(model_name)
         self.strategy = strategy
+        self.history = []
 
-    def chat(self, user_input):
-        if not self.strategy:
-            raise ValueError("No strategy set for the chatbot!")
+    def chat(self, user_input: str):
         prompt = self.strategy.build_prompt(user_input)
-        response = self.model.generate(prompt)
-        print(response)
-        return response
+        self.history.append({"role": "user", "content": prompt})
+        reply = self.model.generate(self.history)
+        self.history.append({"role": "assistant", "content": reply})
+        return reply
